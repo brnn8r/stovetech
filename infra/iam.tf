@@ -1,10 +1,10 @@
-resource "aws_iam_instance_profile" "s3_read_write_profile" {
-  name  = "s3-read-write-profile"
-  role = "${aws_iam_role.s3_read_write_role.name}"
+resource "aws_iam_instance_profile" "ec2_instance_profile" {
+  name  = "ec2-instance-profile"
+  role = "${aws_iam_role.ec2_instance_role.name}"
 }
 
-resource "aws_iam_role" "s3_read_write_role" {
-    name = "s3-read-write-role"    
+resource "aws_iam_role" "ec2_instance_role" {
+    name = "ec2-instance-role-policy"    
     assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -33,7 +33,7 @@ resource "aws_iam_policy" "s3_read_write_policy" {
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": ["s3:ListBucket"],
+      "Action": ["s3:ListBucket","s3:ListBuckets"],
       "Resource": ["arn:aws:s3:::*"]
     },
     {
@@ -51,6 +51,11 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "s3_read_write_role_policy_attachment" {
-    role = "${aws_iam_role.s3_read_write_role.name}"
+    role = "${aws_iam_role.ec2_instance_role.name}"
     policy_arn = "${aws_iam_policy.s3_read_write_policy.arn}"
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_ssm_role_policy_attachment" {
+    role = "${aws_iam_role.ec2_instance_role.name}"
+    policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
 }

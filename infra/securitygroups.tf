@@ -3,15 +3,6 @@ resource "aws_security_group" "web_dmz_security_group" {
     description = "web site dmz security group"
 }
 
-resource "aws_security_group_rule" "allow_ssh_in" {
-    type = "ingress"
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    security_group_id = "${aws_security_group.web_dmz_security_group.id}"
-}
-
 resource "aws_security_group_rule" "allow_http_in" {
     type = "ingress"
     from_port = 80
