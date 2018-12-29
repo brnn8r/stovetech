@@ -32,11 +32,20 @@ resource "aws_autoscaling_group" "default_autoscaling_group" {
           override = {
             instance_type = "t3.micro"
           }
+
+          override = {
+            instance_type = "t3.small"
+          }
+
+          override = {
+            instance_type = "t2.small"
+          }
       }      
                               
       instances_distribution = {
         on_demand_base_capacity = 1
         on_demand_percentage_above_base_capacity = 100
+        spot_instance_pools = 4
       }
 
       
